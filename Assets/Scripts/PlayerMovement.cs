@@ -1,9 +1,14 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public float jumpSpd = 7f;
+
+    private Keyboard keyboard;
     [Header("Movement")]
     public float moveSpeed;
 
@@ -27,7 +32,10 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        keyboard = Keyboard.current;
     }
+    private bool canMove = true;
+    private CharacterController characterController;
 
     private void Update()
     {
@@ -41,10 +49,10 @@ public class PlayerMovement : MonoBehaviour
         else
             rb.linearDamping = 0;
     }
-
-    private void FixedUpdate()
+private void FixedUpdate()
     {
         MovePlayer();
+        PlayerJump();
     }
 
     private void MyInput()
@@ -68,6 +76,13 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
             rb.linearVelocity = new Vector3(limitedVel.x, rb.linearVelocity.y, limitedVel.z);
+        }
+    }
+    private void PlayerJump()
+    {
+        if (keyboard.spaceKey.wasPressedThisFrame && grounded && canMove)
+        {
+            rb.AddForce(Vector3.up * jumpSpd, ForceMode.Impulse);
         }
     }
 }
