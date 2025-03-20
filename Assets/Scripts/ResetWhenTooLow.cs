@@ -7,7 +7,7 @@ public class ResetWhenTooLow : MonoBehaviour
         if (transform.position.y < lowestAllowed)
         {
             transform.position = Vector3.zero;
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
         }
     }
 }
