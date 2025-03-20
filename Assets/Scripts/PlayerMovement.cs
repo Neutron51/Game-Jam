@@ -46,14 +46,44 @@ public class PlayerMovement : Health
             health = maxHealth;
             shootAction = InputSystem.actions.FindAction("Attack");
     }
+
+    private void Update()
+    {
+        MyInput();
+        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+
+
+        if (grounded)
+            rb.linearDamping = groundDrag;
+        else
+            rb.linearDamping = 0;
+
+            // asen vaihtoa varten ei ole valmis eikä taida tulla käyttöön
+            // /* for (int i = 0; i <guns.Length; i++)
+            //     {
+            //         if (Input.GetKeyDown((i+1) + "") || Input.GetKeyDown("[" + (i+1) +"]"))
+            //         {
+            //             EquipGun(i);
+            //             break;
+            //         }
+            //     */
+            //what is the condition for isPc?
+
+    }
+
+    private void FixedUpdate()
+    {
+        MovePlayer();
+    }
+
     private bool canMove = true;
     private CharacterController characterController;
 
-    /*private void MyInput()
+    private void MyInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-    }*/
+    }
 
     private void MovePlayer()
     {
@@ -85,26 +115,5 @@ public class PlayerMovement : Health
         // Debug.Log(health);
         
     }
-    private void Update()
-    {
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-
-
-        if (grounded)
-            rb.linearDamping = groundDrag;
-        else
-            rb.linearDamping = 0;
-
-            // asen vaihtoa varten ei ole valmis eikä taida tulla käyttöön
-            // /* for (int i = 0; i <guns.Length; i++)
-            //     {
-            //         if (Input.GetKeyDown((i+1) + "") || Input.GetKeyDown("[" + (i+1) +"]"))
-            //         {
-            //             EquipGun(i);
-            //             break;
-            //         }
-            //     */
-            //what is the condition for isPc?
-
-}
+    
 }
