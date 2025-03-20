@@ -1,3 +1,4 @@
+/*
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
@@ -5,10 +6,9 @@ using UnityEngine.InputSystem;
 using System;
 using TMPro;
 
-public class Gun : MonoBehaviour
+public class Gumm : MonoBehaviour
 {
-    //seni is for shotgun because it has limited amount of ammo
-    public enum GunType { Seni, Auto, Semi};
+    public enum GunType { Seni, Auto };
 
     public LayerMask collisionMask;
     public float gunID;
@@ -17,13 +17,15 @@ public class Gun : MonoBehaviour
     public int damage = 1;
 
     public float reloadTime;
-    public int magazineSize, bulletsLeft, magazinesLeft;
+    public int magazineSize, bulletsLeft;
     public bool isReloading;
 
     //ui
     public TextMeshProUGUI ammoDisplay;
 
     public Transform spawn;
+    public Transform shellEjectionPoint;
+    public Rigidbody shell;
     private LineRenderer tracer;
 
     public float secondsBetweenShots;
@@ -45,47 +47,49 @@ public class Gun : MonoBehaviour
     {
         isReloading = true;
         Invoke("ReloadCompleted", reloadTime);
-
     }
 
     public void ReloadCompleted()
     {
         bulletsLeft = magazineSize;
-        magazinesLeft = bulletsLeft + magazineSize;
         isReloading = false;
-        if (Ammodisplay.Instance.ammoDisplay != null)
+        if (AmmoManager.Instance.ammoDisplay != null)
         {
-            Ammodisplay.Instance.ammoDisplay.text = $"{ bulletsLeft}/{magazineSize}={magazinesLeft}";
+            AmmoManager.Instance.ammoDisplay.text = $"{ bulletsLeft}/{magazineSize}";
         }
     }
 
     public void Shoot()
     {
-        if (Ammodisplay.Instance.ammoDisplay != null)
+        if (AmmoManager.Instance.ammoDisplay != null)
         {
-            Ammodisplay.Instance.ammoDisplay.text = $"{ bulletsLeft}/{magazineSize}";
+            AmmoManager.Instance.ammoDisplay.text = $"{ bulletsLeft}/{magazineSize}";
         }
 
         if (CanShoot())
         {
             bulletsLeft--;
-            magazinesLeft--;
             playerAnimator.SetTrigger("shoot");
-            //lokation wher the bulet comes uout of
+
             Ray ray = new Ray(spawn.position, spawn.forward);
             RaycastHit hit;
 
             float shotDistance = 200f;
 
-            /*if (Physics.Raycast(ray, out hit, shotDistance, collisionMask))
+            if (Physics.Raycast(ray, out hit, shotDistance, collisionMask))
             {
                 shotDistance = hit.distance;
-                //i made it to work whit enemy health
-                if (hit.transform.GetComponent<Health>())
+                if (hit.transform.GetComponent<HasHealth>())
                 {
-                    hit.transform.GetComponent<Health>().TakeDamage(damage);
+                    hit.transform.GetComponent<HasHealth>().TakeDamage(damage);
                 }
-            }*/
+
+
+                // if (Physics.Raycast(ray,out hit, shotDistance, collisionMask))
+                // {
+                //     shotDistance = hit.distance; 
+                // }
+            }
 
             //Debug.DrawRay(ray.origin, ray.direction * shotDistance, Color.red, 1f);
 
@@ -95,22 +99,20 @@ public class Gun : MonoBehaviour
             {
                 StartCoroutine("RenderTracer", ray.direction * shotDistance);
             }
+            // Rigidbody newShell = Instantiate(shell, shellEjectionPoint.position, Quaternion.identity) as Rigidbody;
+            // newShell.AddForce(shellEjectionPoint.forward * UnityEngine.Random.Range(150f, 200f) + spawn.forward * UnityEngine.Random.Range(-10f, 10f));
         }
 
     }
+
 
     public void ShootComtinuous()
     {
-        if (gunType == GunType.Seni && bulletsLeft > 0)
-        {
-            Shoot();
-        }
-        if (gunType == GunType.Auto && bulletsLeft > 0)
+        if (gunType == GunType.Auto)
         {
             Shoot();
         }
     }
-    //This loks that it cant shoot if ther are no bullets left
     private bool CanShoot()
     {
         var canShoot = true && Time.time >= nextPossibleShootTime;
@@ -119,14 +121,22 @@ public class Gun : MonoBehaviour
         {
             canShoot = false;
         }
-        if (magazinesLeft == 0 | isReloading)
-        {
-            isReloading = false;
-        }
 
         return canShoot;
     }
+    /* private bool CanShoot()
+     {
+         bool canShoot = true;
 
+         if (Time.time < nextPossibleShootTime)
+         {
+             canShoot = false;
+         }
+
+
+
+         return canShoot;
+     }*//*
     IEnumerator RenderTracer(Vector3 hitPoint)
     {
         tracer.enabled = true;
@@ -138,7 +148,6 @@ public class Gun : MonoBehaviour
     private void Awake()
     {
         bulletsLeft = magazineSize;
-        magazinesLeft = bulletsLeft + magazineSize;
     }
     public void Update()
     {
@@ -152,5 +161,11 @@ public class Gun : MonoBehaviour
         {
             Reload();
         }
-    }
-}
+        /*if (bulletsLeft == 0)
+        {
+            isReloading = true;
+        }*/
+
+        // 1 magazinesize was secondsbetweenshots
+  /*  }
+}*/
