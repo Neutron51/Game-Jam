@@ -7,7 +7,8 @@ using TMPro;
 
 public class Gun : MonoBehaviour
 {
-    public enum GunType { Seni, Auto };
+    //seni is for shotgun because it has limited amount of ammo
+    public enum GunType { Seni, Auto, Semi};
 
     public LayerMask collisionMask;
     public float gunID;
@@ -16,7 +17,7 @@ public class Gun : MonoBehaviour
     public int damage = 1;
 
     public float reloadTime;
-    public int magazineSize, bulletsLeft;
+    public int magazineSize, bulletsLeft, magazinesLeft;
     public bool isReloading;
 
     //ui
@@ -44,15 +45,17 @@ public class Gun : MonoBehaviour
     {
         isReloading = true;
         Invoke("ReloadCompleted", reloadTime);
+
     }
 
     public void ReloadCompleted()
     {
         bulletsLeft = magazineSize;
+        magazinesLeft = bulletsLeft + magazineSize;
         isReloading = false;
         if (Ammodisplay.Instance.ammoDisplay != null)
         {
-            Ammodisplay.Instance.ammoDisplay.text = $"{ bulletsLeft}/{magazineSize}";
+            Ammodisplay.Instance.ammoDisplay.text = $"{ bulletsLeft}/{magazineSize}={magazinesLeft}";
         }
     }
 
@@ -66,6 +69,7 @@ public class Gun : MonoBehaviour
         if (CanShoot())
         {
             bulletsLeft--;
+            magazinesLeft--;
             playerAnimator.SetTrigger("shoot");
             //lokation wher the bulet comes uout of
             Ray ray = new Ray(spawn.position, spawn.forward);
@@ -97,7 +101,11 @@ public class Gun : MonoBehaviour
 
     public void ShootComtinuous()
     {
-        if (gunType == GunType.Auto)
+        if (gunType == GunType.Seni && bulletsLeft > 0)
+        {
+            Shoot();
+        }
+        if (gunType == GunType.Auto && bulletsLeft > 0)
         {
             Shoot();
         }
@@ -110,6 +118,10 @@ public class Gun : MonoBehaviour
         if (bulletsLeft == 0 | isReloading)
         {
             canShoot = false;
+        }
+        if (magazinesLeft == 0 | isReloading)
+        {
+            isReloading = false;
         }
 
         return canShoot;
@@ -126,6 +138,7 @@ public class Gun : MonoBehaviour
     private void Awake()
     {
         bulletsLeft = magazineSize;
+        magazinesLeft = bulletsLeft + magazineSize;
     }
     public void Update()
     {
