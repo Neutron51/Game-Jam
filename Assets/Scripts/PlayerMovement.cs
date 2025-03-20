@@ -4,11 +4,19 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+[RequireComponent(typeof(PlayerInput))]
+public class PlayerMovement : Health
 {
     public float jumpSpd = 7f;
 
+    public Gun[] guns;
+    public int levelsIncoming;
+    [SerializeField] private Gun currentGun;
+    private Animator playerAnimator;
+    InputAction shootAction;
+
     private Keyboard keyboard;
+    private PlayerInput playerInput;
     [Header("Movement")]
     public float moveSpeed;
 
@@ -33,27 +41,43 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         keyboard = Keyboard.current;
+        playerInput = GetComponent<PlayerInput>();
+            playerAnimator = GetComponentInChildren<Animator>();
+            health = maxHealth;
+            shootAction = InputSystem.actions.FindAction("Attack");
     }
-    private bool canMove = true;
-    private CharacterController characterController;
 
     private void Update()
     {
+        MyInput();
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
 
-        MyInput();
-        SpeedControl();
 
         if (grounded)
             rb.linearDamping = groundDrag;
         else
             rb.linearDamping = 0;
+
+            // asen vaihtoa varten ei ole valmis eikä taida tulla käyttöön
+            // /* for (int i = 0; i <guns.Length; i++)
+            //     {
+            //         if (Input.GetKeyDown((i+1) + "") || Input.GetKeyDown("[" + (i+1) +"]"))
+            //         {
+            //             EquipGun(i);
+            //             break;
+            //         }
+            //     */
+            //what is the condition for isPc?
+
     }
-private void FixedUpdate()
+
+    private void FixedUpdate()
     {
         MovePlayer();
-        PlayerJump();
     }
+
+    private bool canMove = true;
+    private CharacterController characterController;
 
     private void MyInput()
     {
@@ -85,4 +109,11 @@ private void FixedUpdate()
             rb.AddForce(Vector3.up * jumpSpd, ForceMode.Impulse);
         }
     }
+    public override void TakeDamage(int amount)
+    {
+        base.TakeDamage(amount);
+        // Debug.Log(health);
+        
+    }
+    
 }
