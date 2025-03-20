@@ -524,7 +524,7 @@ GameObject:
   - component: {fileID: 1122563037}
   - component: {fileID: 1122563036}
   - component: {fileID: 1122563035}
-  - component: {fileID: 1122563034}
+  - component: {fileID: 1122563038}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -552,18 +552,6 @@ RectTransform:
   m_AnchoredPosition: {x: 240, y: -140}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1122563034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1122563032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7759f3562155c1f4e91bf7ee62f26af4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1122563035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -608,9 +596,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1122563034}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadScene
+      - m_Target: {fileID: 1122563038}
+        m_TargetAssemblyTypeName: Sceneloader, Assembly-CSharp
+        m_MethodName: LoadToScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -658,6 +646,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1122563032}
   m_CullTransparentMesh: 1
+--- !u!114 &1122563038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122563032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e7201bb6dcf2554ba1b0c742483e8bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1367446606
 GameObject:
   m_ObjectHideFlags: 0
