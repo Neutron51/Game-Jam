@@ -17,7 +17,7 @@ public class Gun : MonoBehaviour
     public int damage = 1;
 
     public float reloadTime;
-    public int magazineSize, bulletsLeft, magazinesLeft;
+    public int magazineSize, bulletsLeft/*, magazinesLeft*/;
     public bool isReloading;
 
     //ui
@@ -51,11 +51,11 @@ public class Gun : MonoBehaviour
     public void ReloadCompleted()
     {
         bulletsLeft = magazineSize;
-        magazinesLeft = bulletsLeft + magazineSize;
+        //magazinesLeft = bulletsLeft + magazineSize;
         isReloading = false;
         if (Ammodisplay.Instance.ammoDisplay != null)
         {
-            Ammodisplay.Instance.ammoDisplay.text = $"{ bulletsLeft}/{magazineSize}={magazinesLeft}";
+            Ammodisplay.Instance.ammoDisplay.text = $"{ bulletsLeft}/{magazineSize}"/*={magazinesLeft}"*/;
         }
     }
 
@@ -69,7 +69,7 @@ public class Gun : MonoBehaviour
         if (CanShoot())
         {
             bulletsLeft--;
-            magazinesLeft--;
+            /*magazinesLeft--;*/
             playerAnimator.SetTrigger("shoot");
             //lokation wher the bulet comes uout of
             Ray ray = new Ray(spawn.position, spawn.forward);
@@ -77,7 +77,7 @@ public class Gun : MonoBehaviour
 
             float shotDistance = 200f;
 
-            /*if (Physics.Raycast(ray, out hit, shotDistance, collisionMask))
+            if (Physics.Raycast(ray, out hit, shotDistance, collisionMask))
             {
                 shotDistance = hit.distance;
                 //i made it to work whit enemy health
@@ -85,7 +85,7 @@ public class Gun : MonoBehaviour
                 {
                     hit.transform.GetComponent<Health>().TakeDamage(damage);
                 }
-            }*/
+            }
 
             //Debug.DrawRay(ray.origin, ray.direction * shotDistance, Color.red, 1f);
 
@@ -119,10 +119,10 @@ public class Gun : MonoBehaviour
         {
             canShoot = false;
         }
-        if (magazinesLeft == 0 | isReloading)
+        /*if (magazinesLeft == 0 | isReloading)
         {
             isReloading = false;
-        }
+        }*/
 
         return canShoot;
     }
@@ -138,9 +138,9 @@ public class Gun : MonoBehaviour
     private void Awake()
     {
         bulletsLeft = magazineSize;
-        magazinesLeft = bulletsLeft + magazineSize;
+        /*magazinesLeft = bulletsLeft + magazineSize;*/
     }
-    public void Update()
+    /*public void Update()
     {
         //change to new input system
         if (reloadAction.WasPressedThisFrame() && bulletsLeft < magazineSize && isReloading == false)
@@ -152,5 +152,5 @@ public class Gun : MonoBehaviour
         {
             Reload();
         }
-    }
+    }*/
 }
