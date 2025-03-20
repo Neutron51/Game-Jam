@@ -49,11 +49,11 @@ public class PlayerMovement : Health
     private bool canMove = true;
     private CharacterController characterController;
 
-    private void MyInput()
+    /*private void MyInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-    }
+    }*/
 
     private void MovePlayer()
     {
