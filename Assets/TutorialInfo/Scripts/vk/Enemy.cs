@@ -8,7 +8,6 @@ public class Enemy : Health
     [SerializeField] public int damage;
     [SerializeField] public float damageInterval = 1f;
     public float speed = 3.5f;
-    [SerializeField] int xpDrop;
     public bool isClone;
     private float nextAttackTime;
     private bool damageRange;
@@ -61,8 +60,6 @@ public class Enemy : Health
     }
     public override void Death()
     {
-        player.GetComponent<PlayerContrller>().GetXP(xpDrop);
-
         Destroy(gameObject);
         gameObject.SetActive(false);
     }
