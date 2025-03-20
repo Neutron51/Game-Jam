@@ -1,6 +1,12 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
-public class NewEmptyCSharpScript
+[CreateAssetMenu(fileName = "new Consumable", menuName = "Items/Consumable")]
+
+public class Comsumable : MonoBehaviour
 {
-    
+    public ConsumableType type;
 }
+
+public enum ConsumableType { Medkit, Ammo}
